@@ -12,15 +12,10 @@ defmodule SlackRequest do
     abs(String.to_integer(timestamp(conn)) - System.system_time(:second)) <= @allowed_leeway
   end
 
-  def valid_signature?(conn) do
-    valid_signature?(conn, signing_secret())
-  end
+  def valid_signature?(conn, opts \\ []) do
+    body = Keyword.get_lazy(opts, :body, fn -> SlackRequest.BodyReader.get_raw_body(conn) end)
+    secret = Keyword.get_lazy(opts, :secret, &signing_secret/0)
 
-  def valid_signature?(conn, secret) do
-    valid_signature?(conn, secret, SlackRequest.BodyReader.get_raw_body(conn))
-  end
-
-  def valid_signature?(conn, secret, body) do
     hmac_hex =
       :crypto.mac(
         :hmac,

@@ -18,6 +18,6 @@ defmodule SlackRequestTest do
       |> put_req_header("x-slack-request-timestamp", x_slack_request_timestamp)
       |> put_private(:slack_request_raw_body_chunks, [raw_body])
 
-    assert SlackRequest.valid_signature?(conn, signing_secret)
+    assert SlackRequest.valid_signature?(conn, secret: signing_secret)
   end
 end
