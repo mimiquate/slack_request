@@ -30,7 +30,10 @@ defmodule SlackRequest.BodyReader do
   end
 
   defp store_body_chunk(%Plug.Conn{} = conn, chunk) when is_binary(chunk) do
-    chunks = conn.private[@raw_body_key] || []
-    Plug.Conn.put_private(conn, @raw_body_key, [chunk | chunks])
+    Plug.Conn.put_private(
+      conn,
+      @raw_body_key,
+      [chunk | conn.private[@raw_body_key] || []]
+    )
   end
 end
