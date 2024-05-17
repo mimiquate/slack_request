@@ -1,4 +1,4 @@
-# SlackRequest
+# 🔐 SlackRequest
 
 Utilities for verifing an HTTP request can be authenticated as a request
 coming from Slack HQ.
