@@ -7,7 +7,7 @@ defmodule SlackRequest.BodyReader do
   Note that caching is only enabled for specific paths. See `enabled_for?/1`.
   """
 
-  @raw_body_key :slack_request_body_reader
+  @raw_body_key :slack_request_raw_body_chunks
 
   def read_body(%Plug.Conn{} = conn, opts \\ []) do
     case Plug.Conn.read_body(conn, opts) do
