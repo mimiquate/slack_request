@@ -1,13 +1,24 @@
 defmodule SlackRequest.MixProject do
   use Mix.Project
 
+  @description "Verifying requests from Slack"
+  @source_url "https://github.com/mimiquate/slack_request"
+  @version "0.1.0"
+
   def project do
     [
       app: :slack_request,
-      version: "0.1.0",
+      description: @description,
+      version: @version,
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: package(),
+
+      # Docs
+      name: "SlackRequest",
+      source_url: @source_url,
+      docs: docs()
     ]
   end
 
@@ -21,7 +32,25 @@ defmodule SlackRequest.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:plug, "~> 1.15"}
+      {:plug, "~> 1.15"},
+
+      # Dev
+      {:ex_doc, "~> 0.32.2", only: :dev, runtime: false}
+    ]
+  end
+
+  defp package do
+    [
+      licenses: ["Apache-2.0"],
+      links: %{
+        "GitHub" => @source_url
+      }
+    ]
+  end
+
+  defp docs do
+    [
+      extras: ["README.md"]
     ]
   end
 end
