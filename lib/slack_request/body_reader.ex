@@ -1,10 +1,7 @@
 # Inspired by: https://github.com/phoenixframework/phoenix/issues/459#issuecomment-862203762
 defmodule SlackRequest.BodyReader do
   @moduledoc """
-  A body reader that caches raw request body for later use.
-
-  This module is intended to be used as the `:body_reader` option of `Plug.Parsers`.
-  Note that caching is only enabled for specific paths. See `enabled_for?/1`.
+  Intended to be used as the `:body_reader` option of `Plug.Parsers`.
   """
 
   @raw_body_key :slack_request_raw_body_chunks
