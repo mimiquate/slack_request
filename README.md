@@ -1,6 +1,9 @@
 # SlackRequest
 
-**TODO: Add description**
+Utilities for verifing an HTTP request can be authenticated as a request
+coming from Slack HQ.
+
+https://api.slack.com/authentication/verifying-requests-from-slack
 
 ## Installation
 

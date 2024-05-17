@@ -1,6 +1,11 @@
 defmodule SlackRequest do
   @moduledoc """
   Documentation for `SlackRequest`.
+
+  Utilities for verifing an HTTP request can be authenticated as a request
+  coming from Slack HQ.
+
+  https://api.slack.com/authentication/verifying-requests-from-slack
   """
 
   @allowed_leeway 5 * 60
