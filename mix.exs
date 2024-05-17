@@ -32,9 +32,10 @@ defmodule SlackRequest.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:plug, "~> 1.15"},
+      {:plug, "~> 1.13"},
 
       # Dev
+      {:blend, "~> 0.3.0", only: :dev},
       {:ex_doc, "~> 0.32.2", only: :dev, runtime: false}
     ]
   end

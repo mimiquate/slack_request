@@ -15,14 +15,18 @@ jobs:
             lint: true
           - elixir_version: 1.15.7
             otp_version: '25.3.2.12'
+            blend: plug_1_14
           - elixir_version: 1.14.5
             otp_version: '24.3.4.17'
+            blend: plug_1_13
     steps:
       - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
         with:
           otp-version: ${{matrix.otp_version}}
           elixir-version: ${{matrix.elixir_version}}
+      - run: cp blend/${{matrix.blend}}.mix.lock mix.lock
+        if: matrix.blend
       - run: mix deps.get --check-locked
       - run: mix format --check-formatted
         if: ${{ matrix.lint }}
