@@ -12,6 +12,10 @@ defmodule SlackRequest do
     abs(String.to_integer(timestamp(conn)) - System.system_time(:second)) <= @allowed_leeway
   end
 
+  def valid_signature?(conn) do
+    valid_signature?(conn, signing_secret())
+  end
+
   def valid_signature?(conn, secret) do
     valid_signature?(conn, secret, SlackRequest.BodyReader.get_raw_body(conn))
   end
@@ -39,5 +43,9 @@ defmodule SlackRequest do
     [signature] = Plug.Conn.get_req_header(conn, @signature_header_key)
 
     signature
+  end
+
+  defp signing_secret do
+    Application.fetch_env!(:slack_request, :signing_secret)
   end
 end
