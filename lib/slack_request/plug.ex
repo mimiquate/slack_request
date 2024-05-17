@@ -1,6 +1,8 @@
 defmodule SlackRequest.Plug do
   import Plug.Conn
 
+  @not_authorized_body "Not Authorized"
+
   def init(opts), do: opts
 
   def call(conn, _opts) do
@@ -8,7 +10,7 @@ defmodule SlackRequest.Plug do
       conn
     else
       conn
-      |> send_resp(401, "Not Authorized")
+      |> send_resp(401, @not_authorized_body)
       |> halt()
     end
   end
