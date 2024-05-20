@@ -26,6 +26,7 @@ Set `body_reader:` in `Plug.Parsers` inside your `Endpoint`.
 
 ```elixir
 # lib/your_app_web/endpoint.ex
+
 defmodule YourAppWeb.Endpoint do
   ...
 
@@ -41,6 +42,7 @@ Example:
 
 ```elixir
 # lib/your_app_web/router.ex
+
 defmodule YourAppWeb.Router do
 
   ...
@@ -62,6 +64,8 @@ defmodule YourAppWeb.Router do
 Or if just prefer to use the validation function directly:
 
 ```elixir
+# Somewhere were you're ready to validate the incoming request conn
+
 if SlackRequest.valid_signature?(conn, secret: signing_secret, body: raw_request_body) do
   # all good
 else
