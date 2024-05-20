@@ -18,6 +18,61 @@ def deps do
 end
 ```
 
+## Usage
+
+### Plug
+
+Set `body_reader:` in `Plug.Parsers` inside your `Endpoint`.
+
+```elixir
+# lib/your_app_web/endpoint.ex
+
+defmodule YourAppWeb.Endpoint do
+  ...
+
+  plug Plug.Parsers,
+    ...
+    body_reader: {SlackRequest.BodyReader, :read_body, []}
+end
+```
+
+Plug the `SlackRequest.Plug` in the pipeline that handles your Slack Requests/Webhooks.
+
+Example:
+
+```elixir
+# lib/your_app_web/router.ex
+
+defmodule YourAppWeb.Router do
+
+  ...
+
+  pipeline :slack do
+    plug :accepts, ["json"]
+    plug SlackRequest.Plug
+  end
+
+  scope "/slack", YourAppWeb do
+    pipe_through :slack
+
+    ...
+  end
+```
+
+### Manual
+
+Or if just prefer to use the validation function directly:
+
+```elixir
+# Somewhere were you're ready to validate the incoming request conn
+
+if SlackRequest.valid_signature?(conn, secret: signing_secret, body: raw_request_body) do
+  # all good
+else
+  # handle invalid slack request/webhook
+end
+```
+
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/slack_request>.
