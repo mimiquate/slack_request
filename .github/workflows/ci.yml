@@ -11,7 +11,7 @@ jobs:
       matrix:
         include:
           - elixir_version: 1.16.2
-            otp_version: '26.2.5'
+            otp_version: 'OTP-27.0-rc3'
             lint: true
           - elixir_version: 1.16.2
             otp_version: '26.2.5'
