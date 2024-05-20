@@ -13,6 +13,9 @@ jobs:
           - elixir_version: 1.16.2
             otp_version: '26.2.5'
             lint: true
+          - elixir_version: 1.16.2
+            otp_version: '26.2.5'
+            blend: plug_1_15
           - elixir_version: 1.15.7
             otp_version: '25.3.2.12'
             blend: plug_1_14
