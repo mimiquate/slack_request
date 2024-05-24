@@ -5,6 +5,8 @@ on:
 
 jobs:
   main:
+    env:
+      BLEND: ${{ blend }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -28,8 +30,6 @@ jobs:
         with:
           otp-version: ${{matrix.otp_version}}
           elixir-version: ${{matrix.elixir_version}}
-      - run: cp blend/${{matrix.blend}}.mix.lock mix.lock
-        if: matrix.blend
       - run: mix deps.get --check-locked
       - run: mix format --check-formatted
         if: ${{ matrix.lint }}
