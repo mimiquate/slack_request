@@ -6,7 +6,7 @@ on:
 jobs:
   main:
     env:
-      BLEND: ${{ blend }}
+      BLEND: ${{ matrix.blend }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
