@@ -1,3 +1,5 @@
+Code.compile_file("blend/premix.exs")
+
 defmodule SlackRequest.MixProject do
   use Mix.Project
 
@@ -20,6 +22,7 @@ defmodule SlackRequest.MixProject do
       source_url: @source_url,
       docs: docs()
     ]
+    |> Keyword.merge(maybe_lockfile_option())
   end
 
   # Run "mix help compile.app" to learn about applications.
@@ -53,5 +56,13 @@ defmodule SlackRequest.MixProject do
     [
       extras: ["README.md"]
     ]
+  end
+
+  defp maybe_lockfile_option do
+    case System.get_env("MIX_LOCKFILE") do
+      nil -> []
+      "" -> []
+      lockfile -> [lockfile: lockfile]
+    end
   end
 end
