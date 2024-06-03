@@ -1,3 +1,4 @@
+# Conditional for GitHub Dependabot
 if File.exists?("blend/premix.exs") do
   Code.compile_file("blend/premix.exs")
 end
