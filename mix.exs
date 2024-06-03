@@ -1,4 +1,7 @@
-Code.compile_file("blend/premix.exs")
+# Conditional for GitHub Dependabot
+if File.exists?("blend/premix.exs") do
+  Code.compile_file("blend/premix.exs")
+end
 
 defmodule SlackRequest.MixProject do
   use Mix.Project
