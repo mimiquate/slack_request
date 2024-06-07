@@ -12,30 +12,45 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - elixir_version: 1.16.2
-            otp_version: '26.2.5'
+          - elixir: 1.16.2
+            erlang: '26.2.5'
             lint: true
-          - elixir_version: 1.16.2
-            otp_version: '26.2.5'
+          - elixir: 1.16.2
+            erlang: '26.2.5'
             blend: plug_1_15
-          - elixir_version: 1.15.7
-            otp_version: '25.3.2.12'
+          - elixir: 1.15.7
+            erlang: '25.3.2.12'
             blend: plug_1_14
-          - elixir_version: 1.14.5
-            otp_version: '24.3.4.17'
+          - elixir: 1.14.5
+            erlang: '24.3.4.17'
             blend: plug_1_13
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        if: ${{ ! matrix.lint && ! matrix.blend }}
+        with:
+          path: |
+            _build
+            deps
+          key: ${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.erlang }}-${{ hashFiles('mix.lock') }}
+      - uses: actions/cache@v4
+        if: ${{ ! matrix.lint && matrix.blend }}
+        with:
+          path: |
+            blend/_build
+            blend/deps
+          key: ${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.erlang }}-${{ matrix.blend }}-${{ hashFiles(format('blend/{0}.mix.lock', matrix.blend)) }}
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{matrix.otp_version}}
-          elixir-version: ${{matrix.elixir_version}}
+          otp-version: ${{ matrix.erlang }}
+          elixir-version: ${{ matrix.elixir }}
       - run: mix deps.get --check-locked
       - run: mix format --check-formatted
         if: ${{ matrix.lint }}
       - run: mix deps.unlock --check-unused
         if: ${{ matrix.lint }}
-      - run: mix deps.compile
+      - run: mix compile
+        if: ${{ ! matrix.lint }}
       - run: mix compile --warnings-as-errors
         if: ${{ matrix.lint }}
       - run: mix test
