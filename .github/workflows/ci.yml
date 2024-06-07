@@ -31,8 +31,9 @@ jobs:
         with:
           path: |
             _build
+            blend
             deps
-          key: ${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.erlang }}-${{ hashFiles('mix.lock') }}
+          key: ${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.erlang }}-${{ matrix.blend }}-${{ hashFiles('**/*.mix.lock') }}
       - uses: erlef/setup-beam@v1
         with:
           otp-version: ${{ matrix.erlang }}
