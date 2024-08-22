@@ -25,32 +25,52 @@ defmodule SlackRequest.BodyReader do
   ```
   """
 
+  require Logger
+
   @raw_body_key :slack_request_raw_body_chunks
 
+  @deprecated "Please use SlackRequest.BodyReader.read_and_cached_body/2 instead"
   @spec read_body(Plug.Conn.t(), Keyword.t()) ::
           {:ok, binary(), Plug.Conn.t()} | {:more, binary(), Plug.Conn.t()} | {:error, term()}
   def read_body(%Plug.Conn{} = conn, opts \\ []) do
+    # Need runtime warning beacuse compile time warning won't show up for Plug.Parsers MFA configuration.
+    Logger.warning(
+      "[DEPRECATED] Please use SlackRequest.BodyReader.read_and_cached_body/2 instead of SlackRequest.BodyReader.read_body/2"
+    )
+
+    read_and_cache_body(conn, opts)
+  end
+
+  @spec read_and_cache_body(Plug.Conn.t(), Keyword.t()) ::
+          {:ok, binary(), Plug.Conn.t()} | {:more, binary(), Plug.Conn.t()} | {:error, term()}
+  def read_and_cache_body(%Plug.Conn{} = conn, opts \\ []) do
     case Plug.Conn.read_body(conn, opts) do
       {:ok, binary, conn} ->
-        {:ok, binary, store_body_chunk(conn, binary)}
+        {:ok, binary, cache_body_chunk(conn, binary)}
 
       {:more, binary, conn} ->
-        {:more, binary, store_body_chunk(conn, binary)}
+        {:more, binary, cache_body_chunk(conn, binary)}
 
       {:error, reason} ->
         {:error, reason}
     end
   end
 
+  @deprecated "Please use SlackRequest.BodyReader.cached_body/1 instead"
   @spec get_raw_body(Plug.Conn.t()) :: binary()
   def get_raw_body(%Plug.Conn{} = conn) do
+    cached_body(conn)
+  end
+
+  @spec cached_body(Plug.Conn.t()) :: binary()
+  def cached_body(%Plug.Conn{} = conn) do
     case conn.private[@raw_body_key] do
       nil -> nil
       chunks -> chunks |> Enum.reverse() |> Enum.join("")
     end
   end
 
-  defp store_body_chunk(%Plug.Conn{} = conn, chunk) when is_binary(chunk) do
+  defp cache_body_chunk(%Plug.Conn{} = conn, chunk) when is_binary(chunk) do
     Plug.Conn.put_private(
       conn,
       @raw_body_key,

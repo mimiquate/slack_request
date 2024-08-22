@@ -32,7 +32,7 @@ defmodule YourAppWeb.Endpoint do
 
   plug Plug.Parsers,
     ...
-    body_reader: {SlackRequest.BodyReader, :read_body, []}
+    body_reader: {SlackRequest.BodyReader, :read_and_cache_body, []}
 end
 ```
 

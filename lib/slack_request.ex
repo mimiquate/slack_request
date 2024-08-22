@@ -18,7 +18,7 @@ defmodule SlackRequest do
 
   @spec valid_signature?(Plug.Conn.t(), Keyword.t()) :: boolean()
   def valid_signature?(conn, opts \\ []) do
-    body = Keyword.get_lazy(opts, :body, fn -> SlackRequest.BodyReader.get_raw_body(conn) end)
+    body = Keyword.get_lazy(opts, :body, fn -> SlackRequest.BodyReader.cached_body(conn) end)
     secret = Keyword.get_lazy(opts, :secret, &signing_secret/0)
 
     hmac_hex =

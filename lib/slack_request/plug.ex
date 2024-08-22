@@ -3,7 +3,7 @@ defmodule SlackRequest.Plug do
   Plug that automatically tries to verify timestamp and signature of the HTTP request
   to check is a valid Slack HQ HTTP request.
 
-  It needs `SlackRequest.BodyReader.read_body/2` to be set as the `Plug.Parsers`
+  It needs `SlackRequest.BodyReader.read_and_cache_body/2` to be set as the `Plug.Parsers`
   [`:body_reader`](`Plug.Parsers#module-options`).
   """
 
