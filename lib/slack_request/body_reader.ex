@@ -6,7 +6,7 @@ defmodule SlackRequest.BodyReader do
   Keeps the raw body in a private conn assign so that it can be used later in the call stack
   for verification of the Slack HQ HTTP request timestamp and signtaure.
 
-  Note that `Plug.Conn.read_body/2` reads the body once but doesn't keep it for later further
+  Note that default `Plug.Conn.read_body/2` reads the body once but doesn't keep it for later further
   inspection.
   """
 

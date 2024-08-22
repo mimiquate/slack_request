@@ -16,7 +16,6 @@ defmodule SlackRequest do
     abs(String.to_integer(timestamp(conn)) - System.system_time(:second)) <= @allowed_leeway
   end
 
-  @spec valid_signature?(Plug.Conn.t()) :: boolean()
   @spec valid_signature?(Plug.Conn.t(), Keyword.t()) :: boolean()
   def valid_signature?(conn, opts \\ []) do
     body = Keyword.get_lazy(opts, :body, fn -> SlackRequest.BodyReader.get_raw_body(conn) end)
