@@ -1,4 +1,12 @@
 defmodule SlackRequest.Plug do
+  @moduledoc """
+  Plug that automatically tries to verify timestamp and signature of the HTTP request
+  to check is a valid Slack HQ HTTP request.
+
+  It needs `SlackRequest.BodyReader.read_body/2` to be set as the `Plug.Parsers`
+  [`:body_reader`](`Plug.Parsers#module-options`).
+  """
+
   import Plug.Conn
 
   @not_authorized_body "Not Authorized"

@@ -1,7 +1,5 @@
 defmodule SlackRequest do
   @moduledoc """
-  Documentation for `SlackRequest`.
-
   Utilities for verifing an HTTP request can be authenticated as a request
   coming from Slack HQ.
 
@@ -13,10 +11,13 @@ defmodule SlackRequest do
   @timestamp_header_key "x-slack-request-timestamp"
   @version "v0"
 
+  @spec valid_timestamp?(Plug.Conn.t()) :: boolean()
   def valid_timestamp?(conn) do
     abs(String.to_integer(timestamp(conn)) - System.system_time(:second)) <= @allowed_leeway
   end
 
+  @spec valid_signature?(Plug.Conn.t()) :: boolean()
+  @spec valid_signature?(Plug.Conn.t(), Keyword.t()) :: boolean()
   def valid_signature?(conn, opts \\ []) do
     body = Keyword.get_lazy(opts, :body, fn -> SlackRequest.BodyReader.get_raw_body(conn) end)
     secret = Keyword.get_lazy(opts, :secret, &signing_secret/0)
@@ -33,12 +34,14 @@ defmodule SlackRequest do
     signature(conn) == "#{@version}=#{hmac_hex}"
   end
 
+  @spec timestamp(Plug.Conn.t()) :: binary()
   def timestamp(conn) do
     [timestamp] = Plug.Conn.get_req_header(conn, @timestamp_header_key)
 
     timestamp
   end
 
+  @spec signature(Plug.Conn.t()) :: binary()
   def signature(conn) do
     [signature] = Plug.Conn.get_req_header(conn, @signature_header_key)
 
