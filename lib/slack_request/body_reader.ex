@@ -8,6 +8,21 @@ defmodule SlackRequest.BodyReader do
 
   Note that default `Plug.Conn.read_body/2` reads the body once but doesn't keep it for later further
   inspection.
+
+  ## Example
+
+  ```elixir
+  # endpoint.ex
+  Plug.Parsers,
+    ...
+    body_reader: {SlackRequest.BodyReader, :read_and_cache_body, []}
+  ```
+
+  So later, one can get the cached body with:
+
+  ```elixir
+  SlackRequest.BodyReader.cached_body(conn)
+  ```
   """
 
   @raw_body_key :slack_request_raw_body_chunks
