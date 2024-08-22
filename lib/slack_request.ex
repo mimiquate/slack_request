@@ -33,18 +33,26 @@ defmodule SlackRequest do
     signature(conn) == "#{@version}=#{hmac_hex}"
   end
 
-  @spec timestamp(Plug.Conn.t()) :: binary()
+  @spec timestamp(Plug.Conn.t()) :: binary() | nil
   def timestamp(conn) do
-    [timestamp] = Plug.Conn.get_req_header(conn, @timestamp_header_key)
-
-    timestamp
+    header_value(conn, @timestamp_header_key)
   end
 
-  @spec signature(Plug.Conn.t()) :: binary()
+  @spec signature(Plug.Conn.t()) :: binary() | nil
   def signature(conn) do
-    [signature] = Plug.Conn.get_req_header(conn, @signature_header_key)
+    header_value(conn, @signature_header_key)
+  end
 
-    signature
+  defp header_value(conn, key) do
+    conn
+    |> Plug.Conn.get_req_header(key)
+    |> case do
+      [value] ->
+        value
+
+      [] ->
+        nil
+    end
   end
 
   defp signing_secret do

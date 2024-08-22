@@ -44,4 +44,22 @@ defmodule SlackRequestTest do
 
     refute SlackRequest.valid_signature?(conn, secret: context[:secret])
   end
+
+  test "valid_signature? returns false if timestamp NOT present", context do
+    conn =
+      conn(:get, "/", "")
+      |> put_req_header("x-slack-signature", context[:signature])
+      |> put_private(:slack_request_raw_body_chunks, [context[:raw_body]])
+
+    refute SlackRequest.valid_signature?(conn, secret: context[:secret])
+  end
+
+  test "valid_signature? returns false if signature NOT present", context do
+    conn =
+      conn(:get, "/", "")
+      |> put_req_header("x-slack-request-timestamp", context[:timestamp])
+      |> put_private(:slack_request_raw_body_chunks, [context[:raw_body]])
+
+    refute SlackRequest.valid_signature?(conn, secret: context[:secret])
+  end
 end
