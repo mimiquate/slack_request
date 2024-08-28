@@ -35,7 +35,7 @@ defmodule SlackRequest.BodyReader do
   def read_body(%Plug.Conn{} = conn, opts \\ []) do
     # Need runtime warning beacuse compile time warning won't show up for Plug.Parsers MFA configuration.
     Logger.warning(
-      "[DEPRECATED] Please use SlackRequest.BodyReader.read_and_cached_body/2 instead of SlackRequest.BodyReader.read_body/2"
+      "[DEPRECATED] Please use SlackRequest.BodyReader.read_and_cache_body/2 instead of SlackRequest.BodyReader.read_body/2"
     )
 
     read_and_cache_body(conn, opts)
