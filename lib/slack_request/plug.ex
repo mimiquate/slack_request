@@ -14,7 +14,7 @@ defmodule SlackRequest.Plug do
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    if SlackRequest.valid_timestamp?(conn) && SlackRequest.valid_signature?(conn) do
+    if SlackRequest.valid_request?(conn) do
       conn
     else
       conn

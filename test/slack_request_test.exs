@@ -16,29 +16,41 @@ defmodule SlackRequestTest do
     }
   end
 
-  test "valid_signature? returns true if valid", context do
+  test "valid_request? returns true if valid", context do
     conn =
       conn(:get, "/", "")
       |> put_req_header("x-slack-signature", context[:signature])
       |> put_req_header("x-slack-request-timestamp", context[:timestamp])
       |> put_private(:slack_request_raw_body_chunks, [context[:raw_body]])
 
-    assert SlackRequest.valid_signature?(conn, secret: context[:secret])
+    assert(
+      SlackRequest.valid_request?(
+        conn,
+        secret: context[:secret],
+        current_timestamp: context[:timestamp] |> String.to_integer()
+      )
+    )
   end
 
-  test "valid_signature? returns false if signature NOT valid", context do
+  test "valid_request? returns false if signature NOT valid", context do
     conn =
       conn(:get, "/", "")
       |> put_req_header("x-slack-signature", context[:signature] <> "A")
       |> put_req_header("x-slack-request-timestamp", context[:timestamp])
       |> put_private(:slack_request_raw_body_chunks, [context[:raw_body]])
 
-    refute SlackRequest.valid_signature?(conn, secret: context[:secret])
+    refute(
+      SlackRequest.valid_request?(
+        conn,
+        secret: context[:secret],
+        current_timestamp: context[:timestamp] |> String.to_integer()
+      )
+    )
   end
 
   # TODO: Remove conditional once we drop support for plug 1.13
   if function_exported?(Plug.Conn, :prepend_req_headers, 1) do
-    test "valid_signature? returns false if signature repeated", context do
+    test "valid_request? returns false if signature repeated", context do
       conn =
         conn(:get, "/", "")
         |> put_req_header("x-slack-signature", context[:signature])
@@ -46,35 +58,59 @@ defmodule SlackRequestTest do
         |> put_req_header("x-slack-request-timestamp", context[:timestamp])
         |> put_private(:slack_request_raw_body_chunks, [context[:raw_body]])
 
-      refute SlackRequest.valid_signature?(conn, secret: context[:secret])
+      refute(
+        SlackRequest.valid_request?(
+          conn,
+          secret: context[:secret],
+          current_timestamp: context[:timestamp] |> String.to_integer()
+        )
+      )
     end
   end
 
-  test "valid_signature? returns false if timestamp NOT valid", context do
+  test "valid_request? returns false if timestamp NOT valid", context do
     conn =
       conn(:get, "/", "")
       |> put_req_header("x-slack-signature", context[:signature])
       |> put_req_header("x-slack-request-timestamp", "0")
       |> put_private(:slack_request_raw_body_chunks, [context[:raw_body]])
 
-    refute SlackRequest.valid_signature?(conn, secret: context[:secret])
+    refute(
+      SlackRequest.valid_request?(
+        conn,
+        secret: context[:secret],
+        current_timestamp: context[:timestamp] |> String.to_integer()
+      )
+    )
   end
 
-  test "valid_signature? returns false if timestamp NOT present", context do
+  test "valid_request? returns false if timestamp NOT present", context do
     conn =
       conn(:get, "/", "")
       |> put_req_header("x-slack-signature", context[:signature])
       |> put_private(:slack_request_raw_body_chunks, [context[:raw_body]])
 
-    refute SlackRequest.valid_signature?(conn, secret: context[:secret])
+    refute(
+      SlackRequest.valid_request?(
+        conn,
+        secret: context[:secret],
+        current_timestamp: context[:timestamp] |> String.to_integer()
+      )
+    )
   end
 
-  test "valid_signature? returns false if signature NOT present", context do
+  test "valid_request? returns false if signature NOT present", context do
     conn =
       conn(:get, "/", "")
       |> put_req_header("x-slack-request-timestamp", context[:timestamp])
       |> put_private(:slack_request_raw_body_chunks, [context[:raw_body]])
 
-    refute SlackRequest.valid_signature?(conn, secret: context[:secret])
+    refute(
+      SlackRequest.valid_request?(
+        conn,
+        secret: context[:secret],
+        current_timestamp: context[:timestamp] |> String.to_integer()
+      )
+    )
   end
 end
