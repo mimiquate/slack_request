@@ -66,7 +66,7 @@ Or if just prefer to use the validation function directly:
 ```elixir
 # Somewhere were you're ready to validate the incoming request conn
 
-if SlackRequest.valid_signature?(conn, secret: signing_secret, body: raw_request_body) do
+if SlackRequest.valid_request?(conn, secret: signing_secret, body: raw_request_body) do
   # all good
 else
   # handle invalid slack request/webhook

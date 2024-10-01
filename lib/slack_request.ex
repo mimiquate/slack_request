@@ -11,10 +11,29 @@ defmodule SlackRequest do
   @timestamp_header_key "x-slack-request-timestamp"
   @version "v0"
 
-  @spec valid_timestamp?(Plug.Conn.t()) :: boolean()
-  def valid_timestamp?(conn) do
-    abs(String.to_integer(timestamp(conn)) - System.system_time(:second)) <= @allowed_leeway
+  @spec valid_request?(Plug.Conn.t(), Keyword.t()) :: boolean()
+  def valid_request?(conn, options \\ []) do
+    valid_timestamp?(conn, options) && valid_signature?(conn, options)
   end
+
+  @spec valid_timestamp?(Plug.Conn.t(), Keyword.t()) :: boolean()
+  @spec valid_timestamp?(binary(), Keyword.t()) :: boolean()
+  def valid_timestamp?(timestamp, options \\ [])
+
+  def valid_timestamp?(%Plug.Conn{} = conn, options) do
+    conn
+    |> timestamp()
+    |> valid_timestamp?(options)
+  end
+
+  def valid_timestamp?(timestamp, options) when is_binary(timestamp) do
+    abs(
+      String.to_integer(timestamp) -
+        Keyword.get(options, :current_timestamp, System.system_time(:second))
+    ) <= @allowed_leeway
+  end
+
+  def valid_timestamp?(_timestamp, _options), do: false
 
   @spec valid_signature?(Plug.Conn.t(), Keyword.t()) :: boolean()
   def valid_signature?(conn, opts \\ []) do
