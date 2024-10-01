@@ -36,6 +36,20 @@ defmodule SlackRequestTest do
     refute SlackRequest.valid_signature?(conn, secret: context[:secret])
   end
 
+  # TODO: Remove conditional once we drop support for plug 1.13
+  if function_exported?(Plug.Conn, :prepend_req_headers, 1) do
+    test "valid_signature? returns false if signature repeated", context do
+      conn =
+        conn(:get, "/", "")
+        |> put_req_header("x-slack-signature", context[:signature])
+        |> prepend_req_headers([{"x-slack-signature", context[:signature]}])
+        |> put_req_header("x-slack-request-timestamp", context[:timestamp])
+        |> put_private(:slack_request_raw_body_chunks, [context[:raw_body]])
+
+      refute SlackRequest.valid_signature?(conn, secret: context[:secret])
+    end
+  end
+
   test "valid_signature? returns false if timestamp NOT valid", context do
     conn =
       conn(:get, "/", "")

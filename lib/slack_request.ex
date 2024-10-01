@@ -50,7 +50,7 @@ defmodule SlackRequest do
       [value] ->
         value
 
-      [] ->
+      _ ->
         nil
     end
   end
