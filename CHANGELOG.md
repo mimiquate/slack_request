@@ -17,8 +17,8 @@ function should be used instead of `SlackRequest.valid_timestmap?/2` or `SlackRe
 
 ### Fixed
 
-- valid_signature? returns false (instead of crashing) if signature header is repeated
-- valid_timestamp? returns false (instead of crashing) if timestamp header is repeated
+- Validation returns false (instead of crashing) if signature header is repeated
+- Validation returns false (instead of crashing) if timestamp header is repeated
 
 ## [0.3.1] - 2024-08-28
 
