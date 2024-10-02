@@ -8,7 +8,7 @@ defmodule SlackRequest.MixProject do
 
   @description "Verifying requests from Slack"
   @source_url "https://github.com/mimiquate/slack_request"
-  @version "0.3.1"
+  @version "1.0.0"
 
   def project do
     [

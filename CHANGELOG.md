@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2024-10-02
+
+No breaking changes.
+Jumping to 1.0.0, given we're considering the package out of development phase and now in stable public API.
+
+### Added
+
+- `SlackRequest.valid_request?/2`: validates both the timestamp and the signature. When validating manually, this
+function should be used instead of `SlackRequest.valid_timestmap?/2` or `SlackRequest.valid_signature?/2`.
+
+### Fixed
+
+- valid_signature? returns false (instead of crashing) if signature header is repeated
+- valid_timestamp? returns false (instead of crashing) if timestamp header is repeated
+
 ## [0.3.1] - 2024-08-28
 
 ### Fixed

@@ -13,7 +13,7 @@ by adding `slack_request` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:slack_request, "~> 0.3.1"}
+    {:slack_request, "~> 1.0.0"}
   ]
 end
 ```
