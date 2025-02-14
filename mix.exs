@@ -42,7 +42,7 @@ defmodule SlackRequest.MixProject do
       {:plug, "~> 1.13"},
 
       # Dev
-      {:blend, "~> 0.4.0", only: :dev},
+      {:blend, github: "mimiquate/blend", branch: "rearrenge_folder_structure", only: :dev},
       {:ex_doc, "~> 0.37.1", only: :dev, runtime: false}
     ]
   end
