@@ -37,9 +37,9 @@ jobs:
         if: ${{ ! matrix.lint && matrix.blend }}
         with:
           path: |
-            blend/_build
-            blend/deps
-          key: ${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.erlang }}-${{ matrix.blend }}-${{ hashFiles(format('blend/{0}.mix.lock', matrix.blend)) }}
+            blend/*/_build
+            blend/*/deps
+          key: ${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.erlang }}-${{ matrix.blend }}-${{ hashFiles(format('blend/{0}/mix.lock', matrix.blend)) }}
       - uses: erlef/setup-beam@v1
         with:
           otp-version: ${{ matrix.erlang }}
