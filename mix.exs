@@ -8,6 +8,7 @@ defmodule SlackRequest.MixProject do
 
   @description "Verifying requests from Slack"
   @source_url "https://github.com/mimiquate/slack_request"
+  @changelog_url @source_url <> "/blob/-/CHANGELOG.md"
   @version "1.0.0"
 
   def project do
@@ -50,7 +51,8 @@ defmodule SlackRequest.MixProject do
     [
       licenses: ["Apache-2.0"],
       links: %{
-        "GitHub" => @source_url
+        "GitHub" => @source_url,
+        "Changelog" => @changelog_url
       }
     ]
   end
