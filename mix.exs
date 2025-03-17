@@ -42,7 +42,7 @@ defmodule SlackRequest.MixProject do
       {:plug, "~> 1.13"},
 
       # Dev
-      {:blend, "~> 0.4.0", only: :dev},
+      {:blend, "~> 0.5.0", only: :dev},
       {:ex_doc, "~> 0.37.1", only: :dev, runtime: false}
     ]
   end
