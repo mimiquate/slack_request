@@ -12,13 +12,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - elixir: '1.17'
-            erlang: '27.0'
+          - elixir: '1.19'
+            erlang: '28.1.1'
             lint: true
+          - elixir: '1.18'
+            erlang: '27.3.4.4'
+          - elixir: '1.17'
+            erlang: '26.2.5.15'
           - elixir: '1.16'
-            erlang: '26.2.5'
+            erlang: '25.3.2.21'
           - elixir: '1.15'
-            erlang: '25.3.2.12'
+            erlang: '24.3.4.17'
           - elixir: '1.14'
             erlang: '24.3.4.17'
             blend: plug_1_13
