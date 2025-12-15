@@ -28,14 +28,14 @@ jobs:
             blend: plug_1_13
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         if: ${{ ! matrix.lint && ! matrix.blend }}
         with:
           path: |
             _build
             deps
           key: ${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.erlang }}-${{ hashFiles('mix.lock') }}
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         if: ${{ ! matrix.lint && matrix.blend }}
         with:
           path: |
